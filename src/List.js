@@ -1,12 +1,14 @@
 import React from "react";
-import TaskContainer from "./TaskContainer";
+import Task from "./Task";
 
 function List({ list }) {
   return (
     <div>
       <h2>{list.name}</h2>
       <div>
-        <TaskContainer id={list.id} />
+        {list.tasks.map((task) => {
+          return <Task task={task} key={task.id} />;
+        })}
       </div>
     </div>
   );
