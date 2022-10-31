@@ -17,11 +17,11 @@ function List({ list, tasks, onDeleteList }) {
           <button onClick={() => handleDeleteClick()}>Delete 🗑</button>
         </h2>
       </div>
-      <div>
+      {/* <div>
         {tasks.map((task) => {
           return <Task task={task} key={task.id} />;
         })}
-      </div>
+      </div> */}
     </div>
   );
 }

@@ -16,10 +16,40 @@ function ListContainer() {
     setLists(updatedLists);
   }
 
+  function handleChange(e) {
+    setNewListInput(e.target.value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    fetch("http://localhost:9292/lists", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: newListInput,
+      }),
+    })
+      .then((res) => res.json())
+      .then((newList) => addNewList(newList));
+  }
+
+  function addNewList(newListInput) {
+    let listsCopy = [...lists];
+    listsCopy = [...listsCopy, newListInput];
+    setLists(listsCopy);
+  }
+
   return (
     <div>
-      <form>
-        <input value={newListInput} type="text" placeholder="New List"></input>
+      <form onSubmit={handleSubmit}>
+        <input
+          value={newListInput}
+          onChange={handleChange}
+          type="text"
+          placeholder="New List"
+        ></input>
         <button>Create New List</button>
       </form>
       <div>
