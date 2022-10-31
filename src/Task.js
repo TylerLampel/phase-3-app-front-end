@@ -1,7 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 
 function Task({ task }) {
-  return <div>{task.name}</div>;
+  const [isComplete, setIsComplete] = useState(false);
+
+  function handleChange() {
+    setIsComplete(!isComplete);
+  }
+
+  return (
+    <div>
+      {task.name}
+      <button onClick={() => handleChange()}>{isComplete ? "✅" : "⭕"}</button>
+    </div>
+  );
 }
 
 export default Task;
