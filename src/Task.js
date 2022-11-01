@@ -11,6 +11,7 @@ function Task({ task }) {
     <div>
       {task.name}
       <button onClick={() => handleChange()}>{isComplete ? "✅" : "⭕"}</button>
+      <button>Delete 🗑</button>
     </div>
   );
 }

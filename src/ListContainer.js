@@ -3,6 +3,7 @@ import List from "./List";
 
 function ListContainer() {
   const [lists, setLists] = useState([]);
+
   const [newListInput, setNewListInput] = useState("");
 
   useEffect(() => {
@@ -54,14 +55,7 @@ function ListContainer() {
       </form>
       <div>
         {lists.map((list) => {
-          return (
-            <List
-              list={list}
-              key={list.id}
-              tasks={list.tasks}
-              onDeleteList={onDeleteList}
-            />
-          );
+          return <List list={list} key={list.id} onDeleteList={onDeleteList} />;
         })}
       </div>
     </div>

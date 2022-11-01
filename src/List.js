@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Task from "./Task";
 
-function List({ list, tasks, onDeleteList }) {
+function List({ list, onDeleteList }) {
+  const [tasks, setTasks] = useState([]);
+
   function handleDeleteClick() {
     fetch(`http://localhost:9292/lists/${list.id}`, {
       method: "Delete",
@@ -9,6 +11,13 @@ function List({ list, tasks, onDeleteList }) {
       .then((res) => res.json())
       .then((deletedList) => onDeleteList(deletedList));
   }
+
+  useEffect(() => {
+    fetch(`http://localhost:9292/lists/${list.id}/tasks`)
+      .then((res) => res.json())
+      .then(setTasks);
+  }, []);
+
   return (
     <div>
       <div>
@@ -17,11 +26,11 @@ function List({ list, tasks, onDeleteList }) {
           <button onClick={() => handleDeleteClick()}>Delete 🗑</button>
         </h2>
       </div>
-      {/* <div>
+      <div>
         {tasks.map((task) => {
           return <Task task={task} key={task.id} />;
         })}
-      </div> */}
+      </div>
     </div>
   );
 }
