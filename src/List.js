@@ -4,28 +4,14 @@ import Task from "./Task";
 function List({ list, onDeleteList }) {
   const [tasks, setTasks] = useState([]);
 
-  function handleDeleteClick() {
-    fetch(`http://localhost:9292/lists/${list.id}`, {
-      method: "Delete",
-    })
-      .then((res) => res.json())
-      .then((deletedList) => onDeleteList(deletedList));
-  }
-
   useEffect(() => {
-    fetch(`http://localhost:9292/lists/${list.id}/tasks`)
+    fetch(`http://localhost:9292/lists/${list.id}`)
       .then((res) => res.json())
-      .then(setTasks);
+      .then((data) => setTasks(data));
   }, []);
 
   return (
     <div>
-      <div>
-        <h2>
-          {list.name}
-          <button onClick={() => handleDeleteClick()}>Delete 🗑</button>
-        </h2>
-      </div>
       <div>
         {tasks.map((task) => {
           return <Task task={task} key={task.id} />;

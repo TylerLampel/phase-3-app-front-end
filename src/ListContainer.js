@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import List from "./List";
+import { Route, Link } from "react-router-dom";
 
 function ListContainer() {
   const [lists, setLists] = useState([]);
@@ -15,6 +16,14 @@ function ListContainer() {
   function onDeleteList(deletedList) {
     const updatedLists = lists.filter((list) => list.id !== deletedList.id);
     setLists(updatedLists);
+  }
+
+  function handleDeleteClick() {
+    fetch(`http://localhost:9292/lists`, {
+      method: "Delete",
+    })
+      .then((res) => res.json())
+      .then((deletedList) => onDeleteList(deletedList));
   }
 
   function handleChange(e) {
@@ -53,11 +62,21 @@ function ListContainer() {
         ></input>
         <button>Create New List</button>
       </form>
-      <div>
-        {lists.map((list) => {
-          return <List list={list} key={list.id} onDeleteList={onDeleteList} />;
-        })}
-      </div>
+      {lists.map((list) => {
+        return (
+          <div>
+            <Link to={`/lists/${list.id}`}>{list.name}</Link>
+            <button onClick={() => handleDeleteClick()}>Delete 🗑</button>
+            <List
+              list={list}
+              key={list.id}
+              tasks={list.tasks}
+              onDeleteList={onDeleteList}
+            />
+          </div>
+          // make each list have its own page where url is the id of the list
+        );
+      })}
     </div>
   );
 }
