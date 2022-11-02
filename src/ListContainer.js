@@ -4,7 +4,6 @@ import { Route, Link } from "react-router-dom";
 
 function ListContainer() {
   const [lists, setLists] = useState([]);
-
   const [newListInput, setNewListInput] = useState("");
 
   useEffect(() => {
@@ -43,6 +42,7 @@ function ListContainer() {
     })
       .then((res) => res.json())
       .then((newList) => addNewList(newList));
+    setNewListInput("");
   }
 
   function addNewList(newListInput) {
@@ -67,12 +67,14 @@ function ListContainer() {
           <div>
             <Link to={`/lists/${list.id}`}>{list.name}</Link>
             <button onClick={() => handleDeleteClick()}>Delete 🗑</button>
-            <List
-              list={list}
-              key={list.id}
-              tasks={list.tasks}
-              onDeleteList={onDeleteList}
-            />
+            <Route exact path={`/lists/${list.id}/`}>
+              <List
+                list={list}
+                key={list.id}
+                tasks={list.tasks}
+                onDeleteList={onDeleteList}
+              />
+            </Route>
           </div>
           // make each list have its own page where url is the id of the list
         );
