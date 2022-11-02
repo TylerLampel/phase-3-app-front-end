@@ -18,14 +18,6 @@ function ListContainer() {
     setLists(updatedLists);
   }
 
-  function handleDeleteClick() {
-    fetch(`http://localhost:9292/lists`, {
-      method: "Delete",
-    })
-      .then((res) => res.json())
-      .then((deletedList) => onDeleteList(deletedList));
-  }
-
   function handleChange(e) {
     setNewListInput(e.target.value);
   }
@@ -64,19 +56,14 @@ function ListContainer() {
         <button>Create New List</button>
       </form>
       {lists.map((list) => {
+        console.log(list.id);
         return (
           <div key={list.id}>
-            <Link to={`/lists/${list.id}`}>{list.name}</Link>
-            <button onClick={() => handleDeleteClick()}>Delete 🗑</button>
+            <Link to={`/lists/${list.id}`}>{list.name} </Link>
             <Route exact path={`/lists/${list.id}`}>
-              <List
-                list={list}
-                tasks={list.tasks}
-                onDeleteList={onDeleteList}
-              />
+              <List list={list} onDeleteList={onDeleteList} />
             </Route>
           </div>
-          // make each list have its own page where url is the id of the list
         );
       })}
     </div>
