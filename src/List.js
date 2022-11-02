@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import Task from "./Task";
 
-function List({ tasks }) {
+function List({ list }) {
+  const [task, setTask] = useState([]);
+
+  useEffect(() => {
+    fetch(`http://localhost:9292/lists/${list.id}`)
+      .then((res) => res.json())
+      .then((data) => console.log(data));
+  }, []);
+
   return (
     <div>
-      <div>
-        {tasks.map((task) => {
-          return <Task task={task} key={task.id} />;
-        })}
-      </div>
+      <div>{list.id}</div>
     </div>
   );
 }

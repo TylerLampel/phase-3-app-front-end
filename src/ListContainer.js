@@ -4,6 +4,7 @@ import { Route, Link } from "react-router-dom";
 
 function ListContainer() {
   const [lists, setLists] = useState([]);
+
   const [newListInput, setNewListInput] = useState("");
 
   useEffect(() => {
@@ -64,13 +65,12 @@ function ListContainer() {
       </form>
       {lists.map((list) => {
         return (
-          <div>
+          <div key={list.id}>
             <Link to={`/lists/${list.id}`}>{list.name}</Link>
             <button onClick={() => handleDeleteClick()}>Delete 🗑</button>
-            <Route exact path={`/lists/${list.id}/`}>
+            <Route exact path={`/lists/${list.id}`}>
               <List
                 list={list}
-                key={list.id}
                 tasks={list.tasks}
                 onDeleteList={onDeleteList}
               />

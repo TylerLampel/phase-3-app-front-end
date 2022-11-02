@@ -7,9 +7,7 @@ import { Route } from "react-router-dom";
 function App() {
   return (
     <div className="App">
-      <Route exact path="/">
-        <Header />
-      </Route>
+      <Header />
       <Route exact path="/lists">
         <ListContainer />
       </Route>
