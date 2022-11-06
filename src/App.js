@@ -2,16 +2,26 @@ import "./App.css";
 import React from "react";
 import Header from "./Header";
 import ListContainer from "./ListContainer";
-import { Route } from "react-router-dom";
+import List from "./List";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <Route exact path="/lists">
-        <ListContainer />
-      </Route>
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Header />
+        <div>
+          <Switch>
+            <Route exact path="/">
+              <ListContainer />
+            </Route>
+            <Route exact path="/lists/:id">
+              <List />
+            </Route>
+          </Switch>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 

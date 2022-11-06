@@ -1,22 +1,15 @@
 import React, { useState, useEffect } from "react";
-import List from "./List";
 import { Route, Link } from "react-router-dom";
 
 function ListContainer() {
   const [lists, setLists] = useState([]);
-
   const [newListInput, setNewListInput] = useState("");
 
   useEffect(() => {
     fetch("http://localhost:9292/lists")
       .then((res) => res.json())
-      .then(setLists);
+      .then((data) => setLists(data));
   }, []);
-
-  function onDeleteList(deletedList) {
-    const updatedLists = lists.filter((list) => list.id !== deletedList.id);
-    setLists(updatedLists);
-  }
 
   function handleChange(e) {
     setNewListInput(e.target.value);
@@ -43,6 +36,18 @@ function ListContainer() {
     listsCopy = [...listsCopy, newListInput];
     setLists(listsCopy);
   }
+  function handleDeleteClick(id) {
+    fetch(`http://localhost:9292/lists/${id}`, {
+      method: "Delete",
+    })
+      .then((res) => res.json())
+      .then((deletedList) => onDeleteList(deletedList));
+  }
+
+  function onDeleteList(deletedList) {
+    const updatedLists = lists.filter((list) => list.id !== deletedList.id);
+    setLists(updatedLists);
+  }
 
   return (
     <div>
@@ -56,13 +61,12 @@ function ListContainer() {
         <button>Create New List</button>
       </form>
       {lists.map((list) => {
-        console.log(list.id);
         return (
           <div key={list.id}>
-            <Link to={`/lists/${list.id}`}>{list.name} </Link>
-            <Route exact path={`/lists/${list.id}`}>
-              <List list={list} onDeleteList={onDeleteList} />
-            </Route>
+            <Link to={`/lists/${list.id}`}>
+              <h2>{list.name}</h2>
+            </Link>
+            <button onClick={() => handleDeleteClick(list.id)}>Delete 🗑</button>
           </div>
         );
       })}
