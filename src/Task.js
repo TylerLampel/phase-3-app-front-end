@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function Task({ task }) {
+function Task({ task, handleDeleteTaskClick }) {
   const [isComplete, setIsComplete] = useState(false);
 
   function handleChange() {
@@ -11,7 +11,7 @@ function Task({ task }) {
     <div>
       {task.name}
       <button onClick={() => handleChange()}>{isComplete ? "✅" : "⭕"}</button>
-      <button>Delete 🗑</button>
+      <button onClick={() => handleDeleteTaskClick(task.id)}>Delete 🗑</button>
     </div>
   );
 }

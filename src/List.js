@@ -8,6 +8,9 @@ function List() {
   const [tasks, setTasks] = useState([]);
   const [newTaskInput, setNewTaskInput] = useState("");
 
+  // use Promise so to fetch multiple get requests
+  // fulfill before code execution continues
+
   useEffect(() => {
     Promise.all([
       fetch(`http://localhost:9292/lists/${id}`),
@@ -22,7 +25,17 @@ function List() {
       });
   }, []);
 
-  const renderedTasks = tasks.map((task) => <Task key={task.id} task={task} />);
+  // render tasks
+
+  const renderedTasks = tasks.map((task) => (
+    <Task
+      key={task.id}
+      task={task}
+      handleDeleteTaskClick={handleDeleteTaskClick}
+    />
+  ));
+
+  // handling addNewTask form
 
   function handleChange(e) {
     setNewTaskInput(e.target.value);
@@ -50,6 +63,21 @@ function List() {
     let tasksCopy = [...tasks];
     tasksCopy = [...tasksCopy, newTask];
     setTasks(tasksCopy);
+  }
+
+  // handles DeleteTask
+
+  function handleDeleteTaskClick(id) {
+    fetch(`http://localhost:9292/tasks/${id}`, {
+      method: "Delete",
+    })
+      .then((res) => res.json())
+      .then((deletedTask) => onDeleteTask(deletedTask));
+  }
+
+  function onDeleteTask(deletedTask) {
+    const updatedTasks = tasks.filter((task) => task.id !== deletedTask.id);
+    setTasks(updatedTasks);
   }
 
   return (

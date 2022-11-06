@@ -36,7 +36,8 @@ function ListContainer() {
     listsCopy = [...listsCopy, newListInput];
     setLists(listsCopy);
   }
-  function handleDeleteClick(id) {
+
+  function handleDeleteListClick(id) {
     fetch(`http://localhost:9292/lists/${id}`, {
       method: "Delete",
     })
@@ -66,7 +67,9 @@ function ListContainer() {
             <Link to={`/lists/${list.id}`}>
               <h2>{list.name}</h2>
             </Link>
-            <button onClick={() => handleDeleteClick(list.id)}>Delete 🗑</button>
+            <button onClick={() => handleDeleteListClick(list.id)}>
+              Delete 🗑
+            </button>
           </div>
         );
       })}
