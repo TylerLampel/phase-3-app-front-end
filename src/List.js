@@ -32,6 +32,7 @@ function List() {
       key={task.id}
       task={task}
       handleDeleteTaskClick={handleDeleteTaskClick}
+      onUpdateTask={onUpdateTask}
     />
   ));
 
@@ -77,6 +78,19 @@ function List() {
 
   function onDeleteTask(deletedTask) {
     const updatedTasks = tasks.filter((task) => task.id !== deletedTask.id);
+    setTasks(updatedTasks);
+  }
+
+  //edit task
+
+  function onUpdateTask(updatedTask) {
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === updatedTask.id) {
+        return updatedTask;
+      } else {
+        return task;
+      }
+    });
     setTasks(updatedTasks);
   }
 
