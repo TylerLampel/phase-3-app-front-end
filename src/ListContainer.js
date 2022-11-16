@@ -1,78 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { Route, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function ListContainer() {
   const [lists, setLists] = useState([]);
-  const [newListInput, setNewListInput] = useState("");
+
+  // active record terminology
+  // practice OO ruby
+  // right setter and getters (not attr_reader)
 
   useEffect(() => {
     fetch("http://localhost:9292/lists")
       .then((res) => res.json())
-      .then((data) => setLists(data));
+      .then(setLists);
   }, []);
 
-  function handleChange(e) {
-    setNewListInput(e.target.value);
-  }
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    fetch("http://localhost:9292/lists", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: newListInput,
-      }),
-    })
-      .then((res) => res.json())
-      .then((newList) => addNewList(newList));
-    setNewListInput("");
-  }
-
-  function addNewList(newListInput) {
-    let listsCopy = [...lists];
-    listsCopy = [...listsCopy, newListInput];
-    setLists(listsCopy);
-  }
-
-  function handleDeleteListClick(id) {
-    fetch(`http://localhost:9292/lists/${id}`, {
+  function handleDeleteListClick(list_id) {
+    fetch(`http://localhost:9292/lists/${list_id}`, {
       method: "Delete",
     })
       .then((res) => res.json())
-      .then((deletedList) => onDeleteList(deletedList));
-  }
-
-  function onDeleteList(deletedList) {
-    const updatedLists = lists.filter((list) => list.id !== deletedList.id);
-    setLists(updatedLists);
+      .then((updatedLists) => setLists(updatedLists));
   }
 
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-        <input
-          value={newListInput}
-          onChange={handleChange}
-          type="text"
-          placeholder="New List"
-        ></input>
-        <button>Create New List</button>
-      </form>
-      {lists.map((list) => {
-        return (
-          <div key={list.id}>
-            <Link to={`/lists/${list.id}`}>
-              <h2>{list.name}</h2>
-            </Link>
+      <h2>Lists</h2>
+      {lists.map((list) => (
+        <div key={list.id}>
+          <h3>
+            <Link to={`/lists/${list.id}`}>{list.name}</Link>
             <button onClick={() => handleDeleteListClick(list.id)}>
               Delete 🗑
             </button>
-          </div>
-        );
-      })}
+          </h3>
+        </div>
+      ))}
     </div>
   );
 }

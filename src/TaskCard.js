@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { useParams } from "react-router-dom";
 
-function Task({ task, handleDeleteTaskClick, onUpdateTask }) {
-  const { id } = useParams();
+// update task
+
+function TaskCard({ task, list_id, setList, handleDeleteTaskClick }) {
   const [isComplete, setIsComplete] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editFormData, setEditFormData] = useState("");
 
-  function handleChange() {
+  function handleComplete() {
     setIsComplete(!isComplete);
   }
 
@@ -21,7 +21,7 @@ function Task({ task, handleDeleteTaskClick, onUpdateTask }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetch(`http://localhost:9292/tasks/${id}`, {
+    fetch(`http://localhost:9292/lists/${list_id}/tasks/${task.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -31,8 +31,8 @@ function Task({ task, handleDeleteTaskClick, onUpdateTask }) {
       }),
     })
       .then((res) => res.json())
-      .then((updatedTask) => {
-        onUpdateTask(updatedTask);
+      .then((updatedList) => {
+        setList(updatedList);
         setEditFormData("");
         setShowForm();
       });
@@ -41,7 +41,9 @@ function Task({ task, handleDeleteTaskClick, onUpdateTask }) {
   return (
     <div>
       {task.name}
-      <button onClick={() => handleChange()}>{isComplete ? "✅" : "⭕"}</button>
+      <button onClick={() => handleComplete()}>
+        {isComplete ? "✅" : "⭕"}
+      </button>
       {showForm ? (
         <form onSubmit={handleSubmit}>
           <input
@@ -60,4 +62,4 @@ function Task({ task, handleDeleteTaskClick, onUpdateTask }) {
   );
 }
 
-export default Task;
+export default TaskCard;
