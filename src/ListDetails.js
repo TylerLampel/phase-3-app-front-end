@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import TaskCard from "./TaskCard";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
+import Card from "@mui/material/Card";
+
+import CardContent from "@mui/material/CardContent";
 
 function ListDetails() {
   const [list, setList] = useState([]);
@@ -91,10 +96,19 @@ function ListDetails() {
                 onChange={handleListChange}
                 value={editListFormData}
               ></input>
-              <button>Edit</button>
+              <Button
+                variant="outlined"
+                type="submit"
+                size="small"
+                endIcon={<SendIcon />}
+              >
+                Send
+              </Button>
             </form>
           ) : (
-            <button onClick={onToggleFormClick}>Edit</button>
+            <Button variant="outlined" size="small" onClick={onToggleFormClick}>
+              Edit
+            </Button>
           )}
         </h3>
         <form onSubmit={handleSubmit}>
@@ -105,17 +119,28 @@ function ListDetails() {
             onChange={handleChange}
             placeholder="Create New Task"
           ></input>
-          <input type="submit"></input>
+          <Button
+            size="small"
+            variant="contained"
+            type="submit"
+            endIcon={<SendIcon />}
+          >
+            Send
+          </Button>
         </form>
         <br />
         {list.tasks.map((task, index) => (
-          <TaskCard
-            key={index}
-            task={task}
-            list_id={list.id}
-            setList={setList}
-            handleDeleteTaskClick={handleDeleteTaskClick}
-          />
+          <Card variant="outlined" sx={{ maxWidth: 360 }}>
+            <CardContent>
+              <TaskCard
+                key={index}
+                task={task}
+                list_id={list.id}
+                setList={setList}
+                handleDeleteTaskClick={handleDeleteTaskClick}
+              />
+            </CardContent>
+          </Card>
         ))}
       </div>
     );

@@ -1,4 +1,8 @@
 import React, { useState } from "react";
+import Button from "@mui/material/Button";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import SendIcon from "@mui/icons-material/Send";
 
 // update task
 
@@ -41,23 +45,36 @@ function TaskCard({ task, list_id, setList, handleDeleteTaskClick }) {
   return (
     <div>
       {task.name}
-      <button onClick={() => handleComplete()}>
-        {isComplete ? "✅" : "⭕"}
-      </button>
-      {showForm ? (
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            placeholder="Edit Task"
-            onChange={handleChange}
-            value={editFormData}
-          ></input>
-          <button>Edit</button>
-        </form>
-      ) : (
-        <button onClick={onToggleFormClick}>Edit</button>
-      )}
-      <button onClick={() => handleDeleteTaskClick(task.id)}>Delete 🗑</button>
+      <ButtonGroup
+        variant="outlined"
+        aria-label="outlined button group"
+        size="small"
+      >
+        <Button onClick={() => handleComplete()}>
+          {isComplete ? "✅" : "⭕"}
+        </Button>
+        {showForm ? (
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Edit Task"
+              onChange={handleChange}
+              value={editFormData}
+            ></input>
+            <Button type="submit" endIcon={<SendIcon />}>
+              Send
+            </Button>
+          </form>
+        ) : (
+          <Button onClick={onToggleFormClick}>Edit</Button>
+        )}
+        <Button
+          startIcon={<DeleteIcon />}
+          onClick={() => handleDeleteTaskClick(task.id)}
+        >
+          Delete
+        </Button>
+      </ButtonGroup>
     </div>
   );
 }

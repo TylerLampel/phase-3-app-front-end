@@ -1,5 +1,4 @@
 import "./App.css";
-import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import Home from "./Home";
 import ListContainer from "./ListContainer";

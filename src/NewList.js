@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Button from "@mui/material/Button";
+import SendIcon from "@mui/icons-material/Send";
 
 function NewList() {
   const [name, setName] = useState("");
@@ -38,7 +40,14 @@ function NewList() {
           />
         </div>
         <br />
-        <input type="submit" value="Create List" />
+        <Button
+          size="small"
+          variant="contained"
+          type="submit"
+          endIcon={<SendIcon />}
+        >
+          Create List
+        </Button>
       </form>
     </div>
   );
