@@ -1,0 +1,11 @@
+{
+  "folders": [
+	{
+		"path": ".."
+	},
+	{
+		"path": "../../phase-3-sinatra-react-project"
+	}
+],
+  "settings": {}
+}
