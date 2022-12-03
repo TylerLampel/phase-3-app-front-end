@@ -6,7 +6,7 @@ import SendIcon from "@mui/icons-material/Send";
 
 // update task
 
-function TaskCard({ task, list_id, setList, handleDeleteTaskClick }) {
+function TaskCard({ task, setLists, handleDeleteTaskClick }) {
   const [isComplete, setIsComplete] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editFormData, setEditFormData] = useState("");
@@ -25,7 +25,7 @@ function TaskCard({ task, list_id, setList, handleDeleteTaskClick }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    fetch(`http://localhost:9292/lists/${list_id}/tasks/${task.id}`, {
+    fetch(`http://localhost:9292/tasks/${task.id}`, {
       method: "PATCH",
       headers: {
         "Content-Type": "application/json",
@@ -36,7 +36,7 @@ function TaskCard({ task, list_id, setList, handleDeleteTaskClick }) {
     })
       .then((res) => res.json())
       .then((updatedList) => {
-        setList(updatedList);
+        setLists(updatedList);
         setEditFormData("");
         setShowForm();
       });

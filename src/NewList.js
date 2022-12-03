@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 
-function NewList() {
+function NewList({ setLists }) {
   const [name, setName] = useState("");
-  const navigate = useNavigate();
+  let navigate = useNavigate();
 
   function handleChange(e) {
     setName(e.target.value);
@@ -23,7 +23,8 @@ function NewList() {
       }),
     })
       .then((res) => res.json())
-      .then(navigate("/lists"));
+      .then(setLists);
+    navigate("/lists");
   }
   return (
     <div>

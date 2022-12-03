@@ -6,19 +6,11 @@ import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemButton from "@mui/material/ListItemButton";
 import Divider from "@mui/material/Divider";
+import ListDetails from "./ListDetails";
+import { Outlet, useNavigate } from "react-router-dom";
 
-function ListContainer() {
-  const [lists, setLists] = useState([]);
-
-  // active record terminology
-  // practice OO ruby
-  // right setter and getters (not attr_reader)
-
-  useEffect(() => {
-    fetch("http://localhost:9292/lists")
-      .then((res) => res.json())
-      .then(setLists);
-  }, []);
+function ListContainer({ lists, setLists }) {
+  let navigate = useNavigate();
 
   function handleDeleteListClick(list_id) {
     fetch(`http://localhost:9292/lists/${list_id}`, {
@@ -28,6 +20,34 @@ function ListContainer() {
       .then((updatedLists) => setLists(updatedLists));
   }
 
+  const renderedLists = lists.map((list) => (
+    <div key={list.id}>
+      <ListItem
+        disableGutters
+        disablePadding
+        secondaryAction={
+          <Button
+            size="small"
+            variant="contained"
+            startIcon={<DeleteIcon />}
+            onClick={() => handleDeleteListClick(list.id)}
+          >
+            Delete
+          </Button>
+        }
+      >
+        <nav>
+          <h3>
+            <ListItemButton onClick={() => navigate(`:list_id`)}>
+              <ListItemText primary={list.name} />
+            </ListItemButton>
+          </h3>
+        </nav>
+        <Divider />
+      </ListItem>
+      <Outlet context={[list]} />
+    </div>
+  ));
   return (
     <div>
       <h2>Lists</h2>
@@ -38,32 +58,7 @@ function ListContainer() {
           bgcolor: "rgb(217, 221, 183)",
         }}
       >
-        {lists.map((list) => (
-          <ListItem
-            disableGutters
-            disablePadding
-            key={list.id}
-            secondaryAction={
-              <Button
-                size="small"
-                variant="contained"
-                startIcon={<DeleteIcon />}
-                onClick={() => handleDeleteListClick(list.id)}
-              >
-                Delete
-              </Button>
-            }
-          >
-            <nav>
-              <h3>
-                <ListItemButton href={`/lists/${list.id}`}>
-                  <ListItemText primary={list.name} />
-                </ListItemButton>
-              </h3>
-            </nav>
-            <Divider />
-          </ListItem>
-        ))}
+        {renderedLists}
       </List>
     </div>
   );
