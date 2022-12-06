@@ -1,5 +1,9 @@
 #root {
     background-color: rgb(217, 221, 183);
     text-align: center;
+    
+}
+
+#app {
     align-items: center
 }

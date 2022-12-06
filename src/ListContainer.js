@@ -9,14 +9,14 @@ import { ListContext } from "./ListContext";
 
 function ListContainer({ toDoList }) {
   let navigate = useNavigate();
-  const { setLists } = useContext(ListContext);
+  const { setLists, lists } = useContext(ListContext);
 
   function handleDeleteListClick(list_id) {
     fetch(`http://localhost:9292/lists/${list_id}`, {
       method: "Delete",
-    })
-      .then((res) => res.json())
-      .then((updatedLists) => setLists(updatedLists));
+    });
+    const newLists = lists.filter((list) => list.id != list_id);
+    setLists(newLists);
     navigate("/lists");
   }
 
