@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "@mui/material/Button";
 import DeleteIcon from "@mui/icons-material/Delete";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import SendIcon from "@mui/icons-material/Send";
+import { ListContext } from "./ListContext";
 
 // update task
 
-function TaskCard({ task, setLists, handleDeleteTaskClick }) {
+function TaskCard({ task, handleDeleteTaskClick }) {
+  const { setLists } = useContext(ListContext);
   const [isComplete, setIsComplete] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [editFormData, setEditFormData] = useState("");

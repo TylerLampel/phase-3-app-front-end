@@ -1,17 +1,37 @@
-import React, { useState } from "react";
-import { useParams, useOutletContext } from "react-router-dom";
+import React, { useContext, useState } from "react";
+import { useParams } from "react-router-dom";
 import TaskCard from "./TaskCard";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
+import { ListContext } from "./ListContext";
 
-function ListDetails({ setLists }) {
+function ListDetails() {
   const { list_id } = useParams();
+  const { lists, setLists } = useContext(ListContext);
   const [newTaskInput, setNewTaskInput] = useState("");
   const [editListFormData, setEditListFormData] = useState("");
   const [showForm, setShowForm] = useState(false);
-  const [list] = useOutletContext();
+
+  let list = lists.find((list) => list.id === parseInt(list_id));
+
+  const renderedTasks = list.tasks.map((task, index) => (
+    <Card
+      key={index}
+      className="tasks"
+      variant="outlined"
+      sx={{ maxWidth: 360 }}
+    >
+      <CardContent>
+        <TaskCard
+          task={task}
+          setLists={setLists}
+          handleDeleteTaskClick={handleDeleteTaskClick}
+        />
+      </CardContent>
+    </Card>
+  ));
 
   function handleChange(e) {
     setNewTaskInput(e.target.value);
@@ -73,6 +93,7 @@ function ListDetails({ setLists }) {
   return (
     <div>
       <h3>
+        {list.name}
         {showForm ? (
           <form onSubmit={handleListSubmit}>
             <input
@@ -92,7 +113,7 @@ function ListDetails({ setLists }) {
           </form>
         ) : (
           <Button variant="outlined" size="small" onClick={onToggleFormClick}>
-            Edit List Name
+            Edit
           </Button>
         )}
       </h3>
@@ -114,19 +135,8 @@ function ListDetails({ setLists }) {
         </Button>
       </form>
       <br />
-      {list.tasks.map((task, index) => (
-        <Card key={index} variant="outlined" sx={{ maxWidth: 360 }}>
-          <CardContent>
-            <TaskCard
-              task={task}
-              setLists={setLists}
-              handleDeleteTaskClick={handleDeleteTaskClick}
-            />
-          </CardContent>
-        </Card>
-      ))}
+      {renderedTasks}
     </div>
   );
 }
-// }
 export default ListDetails;

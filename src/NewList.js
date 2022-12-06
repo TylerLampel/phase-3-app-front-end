@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
+import { ListContext } from "./ListContext";
 
-function NewList({ setLists }) {
+function NewList() {
+  const { setLists } = useContext(ListContext);
   const [name, setName] = useState("");
   let navigate = useNavigate();
 

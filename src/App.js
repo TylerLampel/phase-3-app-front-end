@@ -1,12 +1,13 @@
 import "./App.css";
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./Header";
 import Home from "./Home";
-import ListContainer from "./ListContainer";
 import ListDetails from "./ListDetails";
+import Lists from "./Lists";
+import { ListContext } from "./ListContext";
 import NewList from "./NewList";
 import Navbar from "./Navbar";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 //reduce useEffects, send nested json down
 
@@ -19,25 +20,21 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <div className="App">
-        <Header />
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="lists/new" element={<NewList setLists={setLists} />} />
-          <Route
-            path="lists"
-            element={<ListContainer lists={lists} setLists={setLists} />}
-          >
-            <Route
-              path=":list_id"
-              element={<ListDetails setLists={setLists} />}
-            />
-          </Route>
-        </Routes>
-      </div>
-    </Router>
+    <ListContext.Provider value={{ lists, setLists }}>
+      <Router>
+        <div className="App">
+          <Header />
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="lists/new" element={<NewList />} />
+            <Route path="lists/" element={<Lists />}>
+              <Route path=":list_id" element={<ListDetails />} />
+            </Route>
+          </Routes>
+        </div>
+      </Router>
+    </ListContext.Provider>
   );
 }
 
